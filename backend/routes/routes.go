@@ -1,8 +1,7 @@
 package routes
 
 import (
-	"imobiliaria_crm/backend/controllers"
-
+	"github.com/CesarHPMP/imobiliaria/backend/controllers"
 	"github.com/gorilla/mux"
 )
 

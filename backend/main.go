@@ -1,14 +1,15 @@
 package main
 
 import (
-	"imobiliaria_crm/backend/routes"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
 	// Set up routes
-	r := routes.NewRouter()
+	r := mux.NewRouter()
 
 	// Start the server
 	log.Println("Server is running on port 8080")
