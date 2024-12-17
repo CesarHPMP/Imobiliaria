@@ -1,19 +1,16 @@
 package main
 
 import (
-	"log"
-	"net/http"
+	"fmt"
 
-	"github.com/gorilla/mux"
+	"imobiliaria_crm/backend/config"
 )
 
 func main() {
-	// Set up routes
-	r := mux.NewRouter()
 
-	// Start the server
-	log.Println("Server is running on port 8080")
-	if err := http.ListenAndServe(":8080", r); err != nil {
-		log.Fatal(err)
-	}
+	// Get DB Config
+	Config := config.LoadConfig()
+	fmt.Println("Database Connection String:", config.GetEnv("DB_PASSWORD", Config.DBUser))
+
+	// Here you would normally initialize your database connection
 }
