@@ -3,8 +3,6 @@ package routes
 import (
 	"net/http"
 
-	"imobiliaria_crm/backend/controllers"
-
 	"github.com/gorilla/mux"
 )
 
@@ -25,6 +23,5 @@ func enableCORS(router *mux.Router) {
 func NewRouter() *mux.Router {
 	router := mux.NewRouter()
 	enableCORS(router) // Enable CORS
-	router.HandleFunc("/api/properties", controllers.GetProperties).Methods("GET")
 	return router
 }

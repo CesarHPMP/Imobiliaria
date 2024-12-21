@@ -17,7 +17,7 @@ type DBconn struct {
 var db DBconn
 
 // Connect initializes the database connection using the given configuration.
-func Connect(cfg config.Config) {
+func Connect(cfg config.Config) error {
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
 		cfg.DBUser,
 		cfg.DBPassword,
@@ -40,7 +40,7 @@ func Connect(cfg config.Config) {
 
 	if err != nil && err.Error() != "no rows in result set" {
 		fmt.Printf("failed to check table existence: %v", err)
-		return
+		return err
 	}
 
 	// If table doesn't exist, create it
@@ -53,6 +53,7 @@ func Connect(cfg config.Config) {
 
 	log.Println("Connected to the database successfully")
 
+	return nil
 }
 
 // GetDB returns the database connection pool.

@@ -14,16 +14,6 @@ import (
 	stdpgx "github.com/jackc/pgx/v4/stdlib"
 )
 
-// Estrutra para usuário
-type User struct {
-	ID       string `json:"id"`
-	Nome     string `json:"nome"`
-	Email    string `json:"email"`
-	Endereco string `json:"endereco"`
-	Numero   string `json:"numero"`
-	Senha    string `json:"senha_hash"`
-}
-
 // RunMigrations runs database migrations from the migrations folder.
 func (db DBconn) RunMigrations(cfg config.Config) error {
 

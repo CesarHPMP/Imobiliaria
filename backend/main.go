@@ -1,39 +1,43 @@
 package main
 
 import (
-	"encoding/json"
+	"log"
+	"net/http"
+
 	"imobiliaria_crm/backend/config"
+	"imobiliaria_crm/backend/controllers"
 	"imobiliaria_crm/backend/database"
 	"imobiliaria_crm/backend/routes"
-	"net/http"
 )
 
-// Property represents a property structure
-type Property struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-}
-
-// Sample data
-var properties = []Property{
-	{ID: 1, Name: "Property One"},
-	{ID: 2, Name: "Property Two"},
-}
-
-// GetProperties handles GET requests to fetch properties
-func GetProperties(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(properties)
-}
-
 func main() {
+	// Load configuration
 	configs := config.LoadConfig()
 
-	database.Connect(configs)
+	// Connect to the database
+	err := database.Connect(configs)
+	if err != nil {
+		log.Fatalf("Failed to connect to the database: %v", err)
+	}
+
+	// Initialize router
 	router := routes.NewRouter()
-	router.HandleFunc("/api/properties", GetProperties).Methods("GET")
+
+	// Define routes
+	router.HandleFunc("/api/properties", controllers.GetProperties).Methods("GET")
+	router.HandleFunc("/api/users", controllers.GetUsers).Methods("GET")
+	router.HandleFunc("/api/addUsers", controllers.AddUser).Methods("POST")
+	router.HandleFunc("/api/createProperty", controllers.CreateProperty).Methods("POST")
+
+	/*
+		Http request does not end after return, instead returns "Property created successfully" in response, which
+		would skip errors in frontend (Major security issue)
+	*/
 
 	// Start the server
-	http.ListenAndServe(":8080", router)
+	log.Println("Server is running on port 8080...")
+	err = http.ListenAndServe(":8080", router)
+	if err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }
