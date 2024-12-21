@@ -44,7 +44,7 @@ func (db DBconn) RunMigrations(cfg config.Config) error {
 	// Initialize the migrator
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://backend/migrations", // Path to migration files
-		"postgres",                  // Database name
+		cfg.DBName,                  // Database name
 		driver,
 	)
 	if err != nil {
@@ -100,5 +100,9 @@ func (db *DBconn) CreateTables(cfg config.Config) error {
 	}
 
 	log.Println("Tables created successfully")
+	err = db.RunMigrations(cfg)
+	if err != nil {
+		return err
+	}
 	return nil
 }
