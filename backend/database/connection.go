@@ -10,7 +10,11 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-var db *pgxpool.Pool
+type DBconn struct {
+	postgresDB *pgxpool.Pool
+}
+
+var db DBconn
 
 // Connect initializes the database connection using the given configuration.
 func Connect(cfg config.Config) {
@@ -23,20 +27,26 @@ func Connect(cfg config.Config) {
 	)
 
 	var err error
-	db, err = pgxpool.Connect(context.Background(), dsn)
+	db.postgresDB, err = pgxpool.Connect(context.Background(), dsn)
 	if err != nil {
 		log.Fatalf("Unable to connect to the database: %v\n", err)
 	}
 
+	err = db.CreateTables(cfg)
+	if err != nil {
+		log.Fatalf("Unable to create tables in the database: %v\n", err)
+	}
+
 	log.Println("Connected to the database successfully")
+
 }
 
 // GetDB returns the database connection pool.
-func GetDB() *pgxpool.Pool {
+func GetDB() DBconn {
 	return db
 }
 
 // CloseDB closes the database connection pool.
 func CloseDB() {
-	db.Close()
+	db.postgresDB.Close()
 }

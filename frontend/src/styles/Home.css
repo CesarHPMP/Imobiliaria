@@ -1,0 +1,137 @@
+/* HomePage.css */
+
+.home-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+  }
+  
+  .home-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #007bff;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    width: 100%;
+  }
+  
+  .login-section {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+  }
+  
+  .login-section button {
+    background-color: #fff;
+    color: #007bff;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .login-section button:hover {
+    background-color: #e9ecef;
+  }
+  
+  .welcome-text h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .welcome-text p {
+    font-size: 1.25rem;
+  }
+  
+  .hero-section {
+    background-color: #fff;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+  }
+  
+  .hero-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: #555;
+  }
+  
+  .hero-section button {
+    background-color: #007bff;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .hero-section button:hover {
+    background-color: #0056b3;
+  }
+  
+  .featured-properties {
+    padding: 3rem 2rem;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .featured-properties h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .property-list {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .property {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    text-align: center;
+    max-width: 200px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .property img {
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+  }
+  
+  .property h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .property p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .home-footer {
+    background-color: #212529;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+  }
+  
