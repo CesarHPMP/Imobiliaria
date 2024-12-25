@@ -2,11 +2,13 @@ package controllers
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"imobiliaria_crm/backend/database"
 	"imobiliaria_crm/backend/utils"
 	"io"
 	"net/http"
+	"strconv"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -190,8 +192,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	query := `SELECT id, senha_hash FROM users WHERE email = $1`
 	row := transaction.QueryRow(context.Background(), query, user.Email)
 
-	var ID, storedHash string
+	var ID *int
+	var storedHash *sql.NullString
+
 	err = row.Scan(&ID, &storedHash)
+
 	if err != nil {
 		if err.Error() == "no rows in result set" {
 			w.Header().Set("Content-Type", "application/json")
@@ -205,8 +210,14 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(user.Senha))
+	if storedHash.String == "" || !storedHash.Valid {
+		http.Error(w, "failed to store scanned row", http.StatusUnauthorized)
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(storedHash.String), []byte(user.Senha))
 	if err != nil {
+		println("passwords are different", err, storedHash.String, user.Senha)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(map[string]string{
@@ -219,6 +230,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "User logged in",
-		"userID":  ID,
+		"userID":  strconv.Itoa(*ID),
 	})
 }
