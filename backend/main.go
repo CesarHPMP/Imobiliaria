@@ -7,6 +7,7 @@ import (
 	"imobiliaria_crm/backend/config"
 	"imobiliaria_crm/backend/controllers"
 	"imobiliaria_crm/backend/database"
+	"imobiliaria_crm/backend/middleware"
 	"imobiliaria_crm/backend/routes"
 )
 
@@ -23,17 +24,15 @@ func main() {
 	// Initialize router
 	router, handler := routes.NewRouter()
 
-	// Define routes
-	router.HandleFunc("/api/properties", controllers.GetProperties).Methods("GET")
-	router.HandleFunc("/api/users", controllers.GetUsers).Methods("GET")
-	router.HandleFunc("/api/addUsers", controllers.AddUser).Methods("POST")
-	router.HandleFunc("/api/createProperty", controllers.CreateProperty).Methods("POST")
-	router.HandleFunc("/api/login", controllers.Login).Methods("POST")
+	protectedRouter := router.PathPrefix("/api/protected").Subrouter()
+	protectedRouter.Use(middleware.AuthMiddleware)
 
-	/*
-		Http request does not end after return, instead returns "Property created successfully" in response, which
-		would skip errors in frontend (Major security issue)
-	*/
+	// Define routes
+	protectedRouter.HandleFunc("/properties", controllers.GetProperties).Methods("GET")
+	protectedRouter.HandleFunc("/users", controllers.GetUsers).Methods("GET")
+	protectedRouter.HandleFunc("/createProperty", controllers.CreateProperty).Methods("POST")
+	router.HandleFunc("/api/addUsers", controllers.AddUser).Methods("POST")
+	router.HandleFunc("/api/login", controllers.Login).Methods("POST")
 
 	// Start the server
 	log.Println("Server is running on port 8080...")
