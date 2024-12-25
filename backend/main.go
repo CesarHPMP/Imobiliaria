@@ -21,13 +21,14 @@ func main() {
 	}
 
 	// Initialize router
-	router := routes.NewRouter()
+	router, handler := routes.NewRouter()
 
 	// Define routes
 	router.HandleFunc("/api/properties", controllers.GetProperties).Methods("GET")
 	router.HandleFunc("/api/users", controllers.GetUsers).Methods("GET")
 	router.HandleFunc("/api/addUsers", controllers.AddUser).Methods("POST")
 	router.HandleFunc("/api/createProperty", controllers.CreateProperty).Methods("POST")
+	router.HandleFunc("/api/login", controllers.Login).Methods("POST")
 
 	/*
 		Http request does not end after return, instead returns "Property created successfully" in response, which
@@ -36,7 +37,7 @@ func main() {
 
 	// Start the server
 	log.Println("Server is running on port 8080...")
-	err = http.ListenAndServe(":8080", router)
+	err = http.ListenAndServe(":8080", handler)
 	if err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}

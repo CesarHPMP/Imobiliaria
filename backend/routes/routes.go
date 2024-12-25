@@ -4,24 +4,21 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
-// Essa função permite requests de origens diferentes
-func enableCORS(router *mux.Router) {
-	router.Use(mux.CORSMethodMiddleware(router))
-	router.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Access-Control-Allow-Origin", "*") // Allow all origins
-			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-			next.ServeHTTP(w, r)
-		})
-	})
+func EnableCORS(router *mux.Router) http.Handler {
+	handler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: true,
+	}).Handler(router)
+	return handler
 }
 
-// Gera um router novo com CORS aplicado
-func NewRouter() *mux.Router {
+func NewRouter() (*mux.Router, http.Handler) {
 	router := mux.NewRouter()
-	enableCORS(router) // Enable CORS
-	return router
+	handler := EnableCORS(router)
+	return router, handler
 }

@@ -26,5 +26,6 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/jackc/pgx/v4 v4.18.3
 	github.com/lib/pq v1.10.9 // indirect
+	github.com/rs/cors v1.11.1
 	go.uber.org/atomic v1.7.0 // indirect
 )

@@ -28,7 +28,7 @@ func LoadConfig() Config {
 	return Config{
 		Port:       GetEnv("PORT", "8080"),
 		DBHost:     GetEnv("DB_HOST", "localhost"),
-		DBPort:     GetEnv("DB_PORT", "5432"),
+		DBPort:     GetEnv("DB_PORT", "5433"),
 		DBUser:     GetEnv("DB_USER", "postgres"),
 		DBPassword: GetEnv("DB_PASSWORD", "password"),
 		DBName:     GetEnv("DB_NAME", "imobiliaria"),

@@ -17,13 +17,11 @@ import (
 // RunMigrations runs database migrations from the migrations folder.
 func (db DBconn) RunMigrations(cfg config.Config) error {
 
-	if db.postgresDB == nil {
+	if db.PostgresDB == nil {
 		return errors.New("database connection pool is not initialized")
 	}
 
-	sqlDB := stdpgx.OpenDB(*db.postgresDB.Config().ConnConfig, nil)
-
-	defer sqlDB.Close()
+	sqlDB := stdpgx.OpenDB(*db.PostgresDB.Config().ConnConfig, nil)
 
 	// Create the Postgres migration driver
 	driver, err := postgres.WithInstance(sqlDB, &postgres.Config{})
@@ -54,12 +52,12 @@ func (db DBconn) RunMigrations(cfg config.Config) error {
 
 // CreateTables creates tables in the database
 func (db *DBconn) CreateTables(cfg config.Config) error {
-	if db.postgresDB == nil {
+	if db.PostgresDB == nil {
 		return errors.New("database connection pool is not initialized")
 	}
 
 	// Start a transaction
-	transaction, err := db.postgresDB.Begin(context.Background())
+	transaction, err := db.PostgresDB.Begin(context.Background())
 	if err != nil {
 		return fmt.Errorf("failed to start transaction: %v", err)
 	}
@@ -69,7 +67,7 @@ func (db *DBconn) CreateTables(cfg config.Config) error {
 	// Example SQL query to create a table
 	createTableQuery := `
         CREATE TABLE users (
-        id UUID PRIMARY KEY,
+        id BIGSERIAL PRIMARY KEY,
         nome VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         endereco TEXT,

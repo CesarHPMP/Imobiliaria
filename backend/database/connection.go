@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 
@@ -11,7 +12,7 @@ import (
 )
 
 type DBconn struct {
-	postgresDB *pgxpool.Pool
+	PostgresDB *pgxpool.Pool
 }
 
 var db DBconn
@@ -27,24 +28,23 @@ func Connect(cfg config.Config) error {
 	)
 
 	var err error
-	db.postgresDB, err = pgxpool.Connect(context.Background(), dsn)
+	db.PostgresDB, err = pgxpool.Connect(context.Background(), dsn)
 	if err != nil {
 		log.Fatalf("Unable to connect to the database: %v\n", err)
 	}
 
 	// Check if the "users" table already exists
 	checkTableQuery := `SELECT to_regclass('public.users')`
-	var result string
+	var result *sql.NullString // Use *sql.NullString to handle potential NULL values
 
-	err = db.postgresDB.QueryRow(context.Background(), checkTableQuery).Scan(&result)
-
-	if err != nil && err.Error() != "no rows in result set" {
-		fmt.Printf("failed to check table existence: %v", err)
+	err = db.PostgresDB.QueryRow(context.Background(), checkTableQuery).Scan(&result)
+	if err != nil {
+		fmt.Printf("Failed to check table existence: %v\n", err)
 		return err
 	}
 
-	// If table doesn't exist, create it
-	if result == "" {
+	// If result is nil, the table doesn't exist
+	if result == nil {
 		err = db.CreateTables(cfg)
 		if err != nil {
 			log.Fatalf("Unable to create tables in the database: %v\n", err)
@@ -63,5 +63,5 @@ func GetDB() DBconn {
 
 // CloseDB closes the database connection pool.
 func CloseDB() {
-	db.postgresDB.Close()
+	db.PostgresDB.Close()
 }

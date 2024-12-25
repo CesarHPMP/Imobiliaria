@@ -1,14 +1,19 @@
-import React from 'react';
-import '../styles/Home.css';
-import '../pages/Imovel'
-import { Link } from 'react-router-dom';
+import React from "react";
+import "../styles/Home.css";
+import "../pages/Imovel";
+import "../pages/Login";
+import { Link } from "react-router-dom";
 
 const HomePage: React.FC = () => {
   return (
     <div className="home-page">
       <header className="home-header">
         <div className="login-section">
-          <button onClick={() => console.log("waiting for login")}>Login</button>
+          <Link to="/Login">
+            <button onClick={() => console.log("waiting for login")}>
+              Login
+            </button>
+          </Link>
         </div>
         <div className="welcome-text">
           <h1>Imobiliária</h1>
@@ -19,8 +24,13 @@ const HomePage: React.FC = () => {
       <main className="home-main">
         <section className="hero-section">
           <h2>Encontre o imóvel perfeito</h2>
-          <p>Explore uma vasta seleção de casas, apartamentos e terrenos disponíveis para venda ou aluguel.</p>
-          <button onClick={() => alert('Procurando imóveis...')}>Começar Agora</button>
+          <p>
+            Explore uma vasta seleção de casas, apartamentos e terrenos
+            disponíveis para venda ou aluguel.
+          </p>
+          <button onClick={() => alert("Procurando imóveis...")}>
+            Começar Agora
+          </button>
         </section>
 
         <section className="featured-properties">
@@ -34,14 +44,18 @@ const HomePage: React.FC = () => {
               </div>
             </Link>
             <div className="property">
-              <img src="https://via.placeholder.com/150" alt="Casa 2" />
-              <h3>Apartamento Moderno</h3>
-              <p>2 quartos, 1 banheiro - R$ 400.000</p>
+              <Link to="/Imovel">
+                <img src="https://via.placeholder.com/150" alt="Casa 2" />
+                <h3>Apartamento Moderno</h3>
+                <p>2 quartos, 1 banheiro - R$ 400.000</p>
+              </Link>
             </div>
             <div className="property">
-              <img src="https://via.placeholder.com/150" alt="Casa 3" />
-              <h3>Terreno Amplo</h3>
-              <p>Área: 500m² - R$ 250.000</p>
+              <Link to="/Imovel">
+                <img src="https://via.placeholder.com/150" alt="Casa 3" />
+                <h3>Terreno Amplo</h3>
+                <p>Área: 500m² - R$ 250.000</p>
+              </Link>
             </div>
           </div>
         </section>
