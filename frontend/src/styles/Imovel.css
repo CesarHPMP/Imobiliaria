@@ -1,63 +1,10 @@
-/* src/components/Imovel.css */
-
-.imovel-page {
-    padding: 20px;
-    background-color: #f8f9fa;
-    min-height: 100vh;
-  }
-  
-  .imovel-title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #343a40;
-  }
-  
-  .property-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  .property-card {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 300px;
-    text-align: center;
-    transition: transform 0.2s;
-  }
-  
-  .property-card:hover {
+.property-card:hover {
     transform: scale(1.05);
-  }
-  
-  .property-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+    transition: transform 0.3s ease;
   }
   
   .property-name {
-    font-size: 1.5rem;
-    margin: 10px 0;
-    color: #007bff;
+    color: #333;
+    font-size: 1.2rem;
   }
   
-  .view-details-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-  }
-  
-  .view-details-button:hover {
-    background-color: #0056b3;
-  }

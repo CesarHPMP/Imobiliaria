@@ -1,25 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/Imovel.css'; // Import the CSS file for styling
+import React, { useState, useEffect } from "react";
+import "../styles/Imovel.css";
 
 const Imovel: React.FC = () => {
   const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
+  const [error, setError] = useState<string | null>(null); // Add error state
 
   useEffect(() => {
     const fetchProperties = async () => {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        setError("User not authenticated");
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetch('http://localhost:8080/api/properties');
+        const response = await fetch(
+          "http://localhost:8080/api/protected/properties",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("jwt"),
+            },
+          }
+        );
+
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
+
         const data = await response.json();
         setProperties(data);
       } catch (error) {
-        console.error('Error fetching properties:', error);
+        console.error("Error fetching properties:", error);
+        setError("Failed to fetch properties");
+      } finally {
+        setLoading(false); // Ensure loading state is updated after the request
       }
     };
 
     fetchProperties();
   }, []);
+
+  if (loading) return <p>Loading properties...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="imovel-page">

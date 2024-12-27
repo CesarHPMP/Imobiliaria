@@ -1,24 +1,49 @@
-version: "3.8"
+version: '3.8'
 
 services:
   backend:
     build:
-      context: ./backend
-      dockerfile: ../docker/backend.dockerfile
+      context: ../backend
+      dockerfile: backend.dockerfile
     ports:
       - "8080:8080"
     networks:
       - crm-network
+    environment:
+      - PORT=8080
+      - DB_HOST=db
+      - DB_PORT=5433
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=imobiliaria
+      - JWT_SECRET=JWTsecret
+    depends_on:
+      - db
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: ../docker/frontend.dockerfile
+      context: ../frontend
+      dockerfile: frontend.dockerfile
     ports:
       - "3000:3000"
+    networks:
+      - crm-network
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: imobiliaria
+    volumes:
+      - db_data:/var/lib/postgresql/data
     networks:
       - crm-network
 
 networks:
   crm-network:
     driver: bridge
+
+volumes:
+  db_data:
