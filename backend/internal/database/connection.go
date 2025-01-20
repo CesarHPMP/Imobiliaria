@@ -28,7 +28,10 @@ func Connect(cfg config.Config) error {
 	)
 
 	var err error
-	db.PostgresDB, err = pgxpool.Connect(context.Background(), dsn)
+
+	ContextVal := context.Background()
+
+	db.PostgresDB, err = pgxpool.Connect(ContextVal, dsn)
 	if err != nil {
 		log.Fatalf("Unable to connect to the database: %v\n", err)
 	}

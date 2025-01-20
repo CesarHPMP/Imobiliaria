@@ -66,9 +66,14 @@ func CreateProperty(w http.ResponseWriter, r *http.Request) {
 
 // Retorna propriedades para uma request GET de HTTP
 func GetProperties(w http.ResponseWriter, r *http.Request) {
+	Properties = []Property{
+		{ID: 1, Address: "123 Main St, Springfield"},
+		{ID: 2, Address: "456 Elm St, Metropolis"},
+		{ID: 3, Address: "789 Oak St, Gotham"},
+	}
 	if r.Method != http.MethodGet {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-		return // Finaliza o fluxo aqui
+		return
 	}
 
 	authToken := r.Header.Get("Authorization")
@@ -80,7 +85,7 @@ func GetProperties(w http.ResponseWriter, r *http.Request) {
 	_, err := utils.ValidateJWT(authToken)
 
 	if err != nil {
-		http.Error(w, "Invalid JWT", http.StatusUnauthorized)
+		http.Error(w, "Invalid JWT"+err.Error(), http.StatusUnauthorized)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

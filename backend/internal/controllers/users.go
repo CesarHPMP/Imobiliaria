@@ -109,10 +109,18 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	jwtToken, err := utils.GenerateJWT(user.ID)
+
+	if err != nil {
+		http.Error(w, "Failed to aquire jwt token"+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	// Respond with success
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "User created successfully",
+		"token":   jwtToken,
 	})
 }

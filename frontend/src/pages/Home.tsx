@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/Home.css";
 import "../pages/Imovel";
-import "../pages/Login";
+import "./Login";
 import { Link } from "react-router-dom";
 
 const HomePage: React.FC = () => {
