@@ -9,7 +9,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtKey = []byte(config.GetEnv("JWTsecret", "")) // Load this from an environment variable for production
+// Load this from an environment variable for production
 
 // Claims structure
 type Claims struct {
@@ -19,6 +19,9 @@ type Claims struct {
 
 // GenerateJWT creates a token for a given user ID
 func GenerateJWT(userID int) (string, error) {
+	Config := config.LoadConfig()
+	var jwtKey = Config.JWTsecret
+
 	claims := &Claims{
 		UserID: userID,
 		RegisteredClaims: jwt.RegisteredClaims{
@@ -32,6 +35,9 @@ func GenerateJWT(userID int) (string, error) {
 
 // ValidateJWT parses and validates a token
 func ValidateJWT(tokenString string) (*Claims, error) {
+	Config := config.LoadConfig()
+	var jwtKey = Config.JWTsecret
+
 	claims := &Claims{}
 
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {

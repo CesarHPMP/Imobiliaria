@@ -27,12 +27,14 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 
 	db := database.GetDB()
 
-	query := "Select * from users;"
+	var Users []User
 
-	row := db.PostgresDB.QueryRow(context.Background(), query, 1)
-
-	var Users = []User{}
-	err := row.Scan(Users)
+	rows, err := db.PostgresDB.Query(context.Background(), "SELECT * FROM users")
+	for rows.Next() {
+		var user User
+		rows.Scan(&user.ID, &user.Nome, &user.Email, &user.Endereco, &user.Numero) // adaptar conforme ordem da tabela
+		Users = append(Users, user)
+	}
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -82,7 +84,6 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	// Get database instance
 	db := database.GetDB()
 
-	db.PostgresDB.QueryRow(context.Background(), "SELECT")
 	// Start transaction
 	transaction, err := db.PostgresDB.Begin(context.Background())
 	if err != nil {
