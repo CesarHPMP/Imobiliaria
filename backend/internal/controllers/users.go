@@ -18,7 +18,7 @@ type User struct {
 	Senha    string `json:"senha_hash"`
 }
 
-// Retorna Users para uma request POST de HTTP
+// Retorna Users para uma request GET de HTTP
 func GetUsers(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Invalid request method", http.StatusBadRequest)
